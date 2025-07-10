@@ -1,0 +1,1193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coherence - Therapeutic Ecosystem</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #4682B4;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 5px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: #4682B4;
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .nav-icon {
+            margin-right: 12px;
+            font-size: 20px;
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Dashboard Cards */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #4682B4;
+            margin-bottom: 15px;
+        }
+
+        /* Coherence Tracker */
+        .coherence-meter {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+        }
+
+        .coherence-circle {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ff6b6b 0deg, #ffa500 90deg, #ffeb3b 180deg, #4caf50 270deg, #2196f3 360deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .coherence-inner {
+            width: 80%;
+            height: 80%;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .coherence-score {
+            font-size: 36px;
+            font-weight: bold;
+            color: #4682B4;
+        }
+
+        .coherence-label {
+            font-size: 14px;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        /* Pattern Recognition */
+        .pattern-timeline {
+            height: 200px;
+            background: linear-gradient(90deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pattern-wave {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 200"><path d="M0,100 Q250,50 500,100 T1000,100" stroke="%234682B4" stroke-width="3" fill="none"/></svg>');
+            animation: wave 4s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-50px); }
+        }
+
+        /* Tinder-style Coping Skills */
+        .swipe-container {
+            position: relative;
+            width: 100%;
+            max-width: 400px;
+            height: 500px;
+            margin: 0 auto;
+            perspective: 1000px;
+        }
+
+        .skill-card {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            cursor: grab;
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .skill-card:active {
+            cursor: grabbing;
+        }
+
+        .skill-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .skill-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4682B4;
+            margin-bottom: 15px;
+        }
+
+        .skill-description {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .swipe-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .swipe-btn {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            font-size: 24px;
+            transition: all 0.3s;
+        }
+
+        .swipe-btn.reject {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .swipe-btn.accept {
+            background: #4caf50;
+            color: white;
+        }
+
+        .swipe-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* AI Insights Panel */
+        .ai-insights {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            padding: 25px;
+            margin: 20px 0;
+        }
+
+        .ai-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+
+        .ai-message {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .ai-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .suggestion-chip {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .suggestion-chip:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Narrative Reframing */
+        .narrative-selector {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .narrative-option {
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .narrative-option:hover, .narrative-option.selected {
+            border-color: #4682B4;
+            background: #f0f8ff;
+        }
+
+        .narrative-icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .narrative-title {
+            font-weight: bold;
+            color: #4682B4;
+            margin-bottom: 8px;
+        }
+
+        .narrative-desc {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Progress Visualization */
+        .progress-chart {
+            width: 100%;
+            height: 300px;
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            position: relative;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 20px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 10px 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4caf50, #2196f3);
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        /* Schema Interruption */
+        .schema-detector {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .schema-alert {
+            color: #856404;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .schema-techniques {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .technique-btn {
+            background: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .technique-btn:hover {
+            background: #f8f9fa;
+            border-color: #4682B4;
+        }
+
+        /* Gamification Elements */
+        .achievement-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(45deg, #ffd700, #ffed4e);
+            color: #333;
+            padding: 8px 15px;
+            border-radius: 20px;
+            margin: 5px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .badge-icon {
+            margin-right: 8px;
+            font-size: 16px;
+        }
+
+        .level-indicator {
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-align: center;
+            margin: 10px 0;
+        }
+
+        /* Input Styles */
+        .input-group {
+            margin: 15px 0;
+        }
+
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #4682B4;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .text-input:focus {
+            outline: none;
+            border-color: #4682B4;
+        }
+
+        .btn {
+            background: #4682B4;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn:hover {
+            background: #5a9bd4;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+        }
+
+        .btn-secondary:hover {
+            background: #7c8591;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+                order: 2;
+            }
+            
+            .main-content {
+                order: 1;
+                padding: 15px;
+            }
+            
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <div class="sidebar">
+            <div class="logo">🧠 Coherence</div>
+            
+            <div class="nav-item active" onclick="showSection('dashboard')">
+                <span class="nav-icon">🏠</span>
+                <span>Dashboard</span>
+            </div>
+            
+            <div class="nav-item" onclick="showSection('coherence-tracker')">
+                <span class="nav-icon">⚡</span>
+                <span>Coherence Tracker</span>
+            </div>
+            
+            <div class="nav-item" onclick="showSection('coping-skills')">
+                <span class="nav-icon">🎯</span>
+                <span>Skill Swiper</span>
+            </div>
+            
+            <div class="nav-item" onclick="showSection('narrative-reframe')">
+                <span class="nav-icon">📖</span>
+                <span>Story Reframer</span>
+            </div>
+            
+            <div class="nav-item" onclick="showSection('schema-interrupt')">
+                <span class="nav-icon">🛑</span>
+                <span>Schema Breaker</span>
+            </div>
+            
+            <div class="nav-item" onclick="showSection('ai-insights')">
+                <span class="nav-icon">🤖</span>
+                <span>AI Therapist</span>
+            </div>
+            
+            <div class="nav-item" onclick="showSection('progress')">
+                <span class="nav-icon">📊</span>
+                <span>Progress Lab</span>
+            </div>
+            
+            <div class="nav-item" onclick="showSection('integration')">
+                <span class="nav-icon">🎨</span>
+                <span>Integration Hub</span>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Dashboard Section -->
+            <div class="content-section active" id="dashboard">
+                <h1 style="color: white; margin-bottom: 30px; font-size: 36px;">Welcome to Your Therapeutic Ecosystem</h1>
+                
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-title">Today's Coherence</div>
+                        <div class="coherence-meter">
+                            <div class="coherence-circle">
+                                <div class="coherence-inner">
+                                    <div class="coherence-score" id="coherence-score">7.8</div>
+                                    <div class="coherence-label">Aligned</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">Pattern Recognition</div>
+                        <div class="pattern-timeline">
+                            <div class="pattern-wave"></div>
+                        </div>
+                        <p style="margin-top: 15px; color: #666;">Your anxiety tends to peak on Mondays and Wednesdays. Consider preemptive coping strategies.</p>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">Achievement Unlocked</div>
+                        <div class="achievement-badge">
+                            <span class="badge-icon">🌟</span>
+                            7-Day Coherence Streak
+                        </div>
+                        <div class="achievement-badge">
+                            <span class="badge-icon">🎯</span>
+                            Schema Interrupt Master
+                        </div>
+                        <div class="level-indicator">Level 12: Integration Warrior</div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">Quick Actions</div>
+                        <button class="btn" style="width: 100%; margin: 5px 0;" onclick="showSection('coherence-tracker')">Quick Coherence Check</button>
+                        <button class="btn btn-secondary" style="width: 100%; margin: 5px 0;" onclick="showSection('coping-skills')">Find Coping Skill</button>
+                        <button class="btn" style="width: 100%; margin: 5px 0;" onclick="showSection('ai-insights')">Talk to AI Therapist</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coherence Tracker Section -->
+            <div class="content-section" id="coherence-tracker">
+                <h2 style="color: white; margin-bottom: 20px;">Real-Time Coherence Tracker</h2>
+                
+                <div class="card">
+                    <div class="card-title">How aligned are your thoughts, feelings, and actions right now?</div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Current Thoughts:</label>
+                        <input type="text" class="text-input" placeholder="What's going through your mind?">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Current Feelings:</label>
+                        <input type="text" class="text-input" placeholder="What are you feeling in your body?">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Current Actions:</label>
+                        <input type="text" class="text-input" placeholder="What are you doing/planning to do?">
+                    </div>
+                    
+                    <button class="btn" onclick="calculateCoherence()">Calculate Coherence Score</button>
+                    
+                    <div id="coherence-result" style="margin-top: 20px; display: none;">
+                        <div class="ai-insights">
+                            <div class="ai-avatar">🧠</div>
+                            <div class="ai-message" id="coherence-feedback"></div>
+                            <div class="ai-suggestions" id="coherence-suggestions"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coping Skills Swiper -->
+            <div class="content-section" id="coping-skills">
+                <h2 style="color: white; margin-bottom: 20px;">Skill Swiper - Find Your Perfect Coping Strategy</h2>
+                
+                <div class="card">
+                    <div class="card-title">Swipe right to try, left to skip</div>
+                    
+                    <div class="swipe-container">
+                        <div class="skill-card" id="skill-card-0">
+                            <div class="skill-icon">🫁</div>
+                            <div class="skill-title">Box Breathing</div>
+                            <div class="skill-description">Breathe in for 4, hold for 4, out for 4, hold for 4. Repeat to activate your parasympathetic nervous system.</div>
+                        </div>
+                    </div>
+                    
+                    <div class="swipe-actions">
+                        <button class="swipe-btn reject" onclick="swipeSkill('reject')">❌</button>
+                        <button class="swipe-btn accept" onclick="swipeSkill('accept')">✅</button>
+                    </div>
+                    
+                    <div id="accepted-skills" style="margin-top: 20px;">
+                        <h4>Your Personalized Toolkit:</h4>
+                        <div id="skill-toolkit"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Narrative Reframing -->
+            <div class="content-section" id="narrative-reframe">
+                <h2 style="color: white; margin-bottom: 20px;">Story Reframer - Transform Your Challenge</h2>
+                
+                <div class="card">
+                    <div class="card-title">Describe your current challenge:</div>
+                    <textarea class="text-input" rows="4" id="challenge-input" placeholder="What's challenging you right now?"></textarea>
+                    
+                    <div class="card-title" style="margin-top: 20px;">Choose your narrative lens:</div>
+                    <div class="narrative-selector">
+                        <div class="narrative-option" onclick="selectNarrative('hero')">
+                            <div class="narrative-icon">⚔️</div>
+                            <div class="narrative-title">Hero's Journey</div>
+                            <div class="narrative-desc">You're the hero facing trials that will transform you</div>
+                        </div>
+                        
+                        <div class="narrative-option" onclick="selectNarrative('comedy')">
+                            <div class="narrative-icon">😄</div>
+                            <div class="narrative-title">Comedy</div>
+                            <div class="narrative-desc">Find the humor and absurdity in the situation</div>
+                        </div>
+                        
+                        <div class="narrative-option" onclick="selectNarrative('mystery')">
+                            <div class="narrative-icon">🔍</div>
+                            <div class="narrative-title">Mystery</div>
+                            <div class="narrative-desc">You're a detective gathering clues and evidence</div>
+                        </div>
+                        
+                        <div class="narrative-option" onclick="selectNarrative('transformation')">
+                            <div class="narrative-icon">🦋</div>
+                            <div class="narrative-title">Transformation</div>
+                            <div class="narrative-desc">Like a caterpillar becoming a butterfly</div>
+                        </div>
+                    </div>
+                    
+                    <div id="narrative-result" style="margin-top: 20px; display: none;">
+                        <div class="ai-insights">
+                            <div class="ai-avatar">📖</div>
+                            <div class="ai-message" id="narrative-reframe"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Schema Interruption -->
+            <div class="content-section" id="schema-interrupt">
+                <h2 style="color: white; margin-bottom: 20px;">Schema Breaker - Interrupt Automatic Patterns</h2>
+                
+                <div class="card">
+                    <div class="card-title">What thoughts or feelings are repeating?</div>
+                    <textarea class="text-input" rows="3" id="schema-input" placeholder="Describe the automatic pattern you're noticing..."></textarea>
+                    <button class="btn" onclick="detectSchema()">Analyze Pattern</button>
+                    
+                    <div id="schema-detection" style="display: none;">
+                        <div class="schema-detector">
+                            <div class="schema-alert">🛑 Schema Pattern Detected: <span id="detected-schema"></span></div>
+                            <p>This pattern often stems from early experiences. Here are evidence-based interruption techniques:</p>
+                            
+                            <div class="schema-techniques">
+                                <div class="technique-btn" onclick="useSchemaAttack('reality-testing')">Reality Testing</div>
+                                <div class="technique-btn" onclick="useSchemaAttack('cognitive-restructuring')">Cognitive Restructuring</div>
+                                <div class="technique-btn" onclick="useSchemaAttack('behavioral-experiment')">Behavioral Experiment</div>
+                                <div class="technique-btn" onclick="useSchemaAttack('mindful-awareness')">Mindful Awareness</div>
+                            </div>
+                        </div>
+                        
+                        <div id="technique-guide" style="margin-top: 20px; display: none;">
+                            <div class="ai-insights">
+                                <div class="ai-avatar">🎯</div>
+                                <div class="ai-message" id="technique-instruction"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI Insights -->
+            <div class="content-section" id="ai-insights">
+                <h2 style="color: white; margin-bottom: 20px;">AI Therapist - Multi-Modal Analysis</h2>
+                
+                <div class="card">
+                    <div class="card-title">Tell me what's on your mind:</div>
+                    <textarea class="text-input" rows="4" id="ai-input" placeholder="Share whatever you're thinking or feeling..."></textarea>
+                    <button class="btn" onclick="getAIAnalysis()">Get Multi-Perspective Analysis</button>
+                    
+                    <div id="ai-analysis" style="margin-top: 20px; display: none;">
+                        <div class="ai-insights">
+                            <div class="ai-avatar">🧠</div>
+                            <div class="ai-message">
+                                <strong>Jung's Perspective:</strong> <span id="jung-analysis"></span><br><br>
+                                <strong>Cognitive Behavioral:</strong> <span id="cbt-analysis"></span><br><br>
+                                <strong>Mindfulness:</strong> <span id="mindful-analysis"></span><br><br>
+                                <strong>Neuroplasticity:</strong> <span id="neuro-analysis"></span>
+                            </div>
+                            <div class="ai-suggestions" id="multi-suggestions"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Section -->
+            <div class="content-section" id="progress">
+                <h2 style="color: white; margin-bottom: 20px;">Progress Lab - Track Your Evolution</h2>
+                
+                <div class="dashboard-grid">
+                    <div class="card">
+                        <div class="card-title">Coherence Trend (30 days)</div>
+                        <div class="progress-chart">
+                            <canvas id="coherence-chart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">Skill Mastery</div>
+                        <div class="input-group">
+                            <label>Mindfulness</label>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 78%"></div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Cognitive Restructuring</label>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Schema Interruption</label>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 82%"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <div class="card-title">Pattern Insights</div>
+                        <p><strong>Strongest Pattern:</strong> Anxiety peaks during work transitions</p>
+                        <p><strong>Best Coping Skill:</strong> Box breathing (89% success rate)</p>
+                        <p><strong>Growth Area:</strong> Self-compassion practices</p>
+                        <p><strong>Neuroplasticity Score:</strong> High - Your brain is very adaptable right now!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Integration Hub -->
+            <div class="content-section" id="integration">
+                <h2 style="color: white; margin-bottom: 20px;">Integration Hub - Synthesize Your Growth</h2>
+                
+                <div class="card">
+                    <div class="card-title">45-Minute Neuroplasticity Window</div>
+                    <p>You're in the optimal window for integration after your last session!</p>
+                    
+                    <div class="input-group">
+                        <label class="input-label">Key insight from today:</label>
+                        <input type="text" class="text-input" placeholder="What clicked or shifted?">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label class="input-label">How will you embody this insight?</label>
+                        <textarea class="text-input" rows="3" placeholder="Specific actions you'll take..."></textarea>
+                    </div>
+                    
+                    <button class="btn" onclick="createIntegrationPlan()">Create Integration Plan</button>
+                    
+                    <div id="integration-plan" style="margin-top: 20px; display: none;">
+                        <div class="ai-insights">
+                            <div class="ai-avatar">🎨</div>
+                            <div class="ai-message" id="integration-message"></div>
+                            <div class="ai-suggestions" id="integration-actions"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card" style="margin-top: 20px;">
+                    <div class="card-title">Holistic Growth Tracker</div>
+                    <div class="dashboard-grid">
+                        <div style="text-align: center;">
+                            <h4>Mind Integration</h4>
+                            <div class="coherence-score" style="font-size: 24px;">8.2</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <h4>Body Awareness</h4>
+                            <div class="coherence-score" style="font-size: 24px;">7.1</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <h4>Emotional Flow</h4>
+                            <div class="coherence-score" style="font-size: 24px;">7.8</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <h4>Spiritual Connection</h4>
+                            <div class="coherence-score" style="font-size: 24px;">6.9</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global app state
+        let currentSkillIndex = 0;
+        let acceptedSkills = [];
+        let coherenceHistory = [6.2, 6.8, 7.1, 7.5, 7.8, 8.0, 7.8];
+        let selectedNarrative = null;
+
+        // Coping skills database
+        const copingSkills = [
+            {
+                icon: "🫁",
+                title: "Box Breathing",
+                description: "Breathe in for 4, hold for 4, out for 4, hold for 4. Repeat to activate your parasympathetic nervous system.",
+                category: "anxiety"
+            },
+            {
+                icon: "🎵",
+                title: "Progressive Muscle Relaxation",
+                description: "Tense and release each muscle group, starting from your toes and working up to your head.",
+                category: "tension"
+            },
+            {
+                icon: "🌊",
+                title: "Mindful Observation",
+                description: "Notice 5 things you can see, 4 you can hear, 3 you can touch, 2 you can smell, 1 you can taste.",
+                category: "grounding"
+            },
+            {
+                icon: "✍️",
+                title: "Thought Record",
+                description: "Write down the situation, your automatic thought, emotion, and a more balanced perspective.",
+                category: "cognitive"
+            },
+            {
+                icon: "🚶",
+                title: "Walking Meditation",
+                description: "Walk slowly and mindfully, focusing on each step and your connection to the ground.",
+                category: "mindfulness"
+            },
+            {
+                icon: "💭",
+                title: "Loving-Kindness Practice",
+                description: "Send kind wishes to yourself, loved ones, neutral people, difficult people, and all beings.",
+                category: "compassion"
+            },
+            {
+                icon: "🎯",
+                title: "STOP Technique",
+                description: "Stop what you're doing, Take a breath, Observe your thoughts and feelings, Proceed mindfully.",
+                category: "interruption"
+            },
+            {
+                icon: "🔄",
+                title: "Cognitive Reframing",
+                description: "Ask: Is this thought helpful? What would I tell a friend? What's a more balanced perspective?",
+                category: "cognitive"
+            }
+        ];
+
+        // Navigation function
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Remove active class from nav items
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Add active class to clicked nav item
+            event.target.closest('.nav-item').classList.add('active');
+        }
+
+        // Coherence calculation
+        function calculateCoherence() {
+            const thoughts = document.querySelector('#coherence-tracker .text-input:nth-child(1)').value;
+            const feelings = document.querySelector('#coherence-tracker .text-input:nth-child(1)').nextElementSibling.nextElementSibling.value;
+            const actions = document.querySelector('#coherence-tracker .text-input:nth-child(1)').nextElementSibling.nextElementSibling.nextElementSibling.nextElementSibling.value;
+            
+            // Simple coherence algorithm (in real app, this would be more sophisticated)
+            let score = 5.0;
+            
+            // Check for alignment keywords
+            const positiveWords = ['calm', 'peaceful', 'aligned', 'clear', 'focused', 'grateful', 'confident'];
+            const negativeWords = ['anxious', 'stressed', 'confused', 'overwhelmed', 'angry', 'sad', 'frustrated'];
+            
+            const allText = (thoughts + ' ' + feelings + ' ' + actions).toLowerCase();
+            
+            positiveWords.forEach(word => {
+                if (allText.includes(word)) score += 0.5;
+            });
+            
+            negativeWords.forEach(word => {
+                if (allText.includes(word)) score -= 0.3;
+            });
+            
+            score = Math.max(1, Math.min(10, score));
+            
+            // Update display
+            document.getElementById('coherence-score').textContent = score.toFixed(1);
+            document.getElementById('coherence-result').style.display = 'block';
+            
+            // Generate feedback
+            let feedback, suggestions;
+            if (score >= 8) {
+                feedback = "Excellent coherence! Your thoughts, feelings, and actions are well-aligned. This is an optimal state for growth and learning.";
+                suggestions = ['Maintain this state', 'Share your insights', 'Take aligned action'];
+            } else if (score >= 6) {
+                feedback = "Good coherence with room for improvement. You're mostly aligned but there might be some internal conflict to explore.";
+                suggestions = ['Practice mindfulness', 'Journal about conflicts', 'Try breathing exercises'];
+            } else {
+                feedback = "Low coherence detected. There seems to be significant misalignment between your thoughts, feelings, and actions. This is a great opportunity for growth.";
+                suggestions = ['Start with breathing', 'Explore your feelings', 'Seek support', 'Practice self-compassion'];
+            }
+            
+            document.getElementById('coherence-feedback').textContent = feedback;
+            
+            const suggestionsContainer = document.getElementById('coherence-suggestions');
+            suggestionsContainer.innerHTML = '';
+            suggestions.forEach(suggestion => {
+                const chip = document.createElement('div');
+                chip.className = 'suggestion-chip';
+                chip.textContent = suggestion;
+                suggestionsContainer.appendChild(chip);
+            });
+        }
+
+        // Skill swiper functionality
+        function loadSkillCard() {
+            if (currentSkillIndex >= copingSkills.length) {
+                // Reset or show completion message
+                currentSkillIndex = 0;
+            }
+            
+            const skill = copingSkills[currentSkillIndex];
+            const card = document.getElementById('skill-card-0');
+            
+            card.innerHTML = `
+                <div class="skill-icon">${skill.icon}</div>
+                <div class="skill-title">${skill.title}</div>
+                <div class="skill-description">${skill.description}</div>
+            `;
+        }
+
+        function swipeSkill(action) {
+            const skill = copingSkills[currentSkillIndex];
+            
+            if (action === 'accept') {
+                acceptedSkills.push(skill);
+                updateSkillToolkit();
+                
+                // Show acceptance animation
+                const card = document.getElementById('skill-card-0');
+                card.style.transform = 'translateX(100px) rotate(15deg)';
+                card.style.opacity = '0';
+            } else {
+                // Show rejection animation
+                const card = document.getElementById('skill-card-0');
+                card.style.transform = 'translateX(-100px) rotate(-15deg)';
+                card.style.opacity = '0';
+            }
+            
+            setTimeout(() => {
+                currentSkillIndex++;
+                loadSkillCard();
+                const card = document.getElementById('skill-card-0');
+                card.style.transform = 'translateX(0) rotate(0deg)';
+                card.style.opacity = '1';
+            }, 300);
+        }
+
+        function updateSkillToolkit() {
+            const toolkit = document.getElementById('skill-toolkit');
+            toolkit.innerHTML = '';
+            
+            acceptedSkills.forEach(skill => {
+                const skillElement = document.createElement('div');
+                skillElement.className = 'achievement-badge';
+                skillElement.innerHTML = `<span class="badge-icon">${skill.icon}</span>${skill.title}`;
+                toolkit.appendChild(skillElement);
+            });
+        }
+
+        // Narrative reframing
+        function selectNarrative(type) {
+            selectedNarrative = type;
+            
+            // Update visual selection
+            document.querySelectorAll('.narrative-option').forEach(option => {
+                option.classList.remove('selected');
+            });
+            event.target.closest('.narrative-option').classList.add('selected');
+            
+            // Generate reframe
+            const challenge = document.getElementById('challenge-input').value;
+            if (challenge.trim() === '') return;
+            
+            let reframe = '';
+            
+            switch(type) {
+                case 'hero':
+                    reframe = `In the Hero's Journey framework, you're facing a crucial trial that will ultimately transform you. This challenge is your "call to adventure" - an opportunity to discover inner strengths you didn't know you had. Every hero faces obstacles that seem insurmountable, but these are exactly what forge character and wisdom. Ask yourself: What strengths is this challenge helping me develop? Who are your allies in this journey? What would the transformed version of yourself say about this experience?`;
+                    break;
+                case 'comedy':
+                    reframe = `Looking through a comedy lens, there might be some delightfully absurd elements to this situation. Comedy often emerges from the gap between expectations and reality. What if this challenge is the universe's way of teaching you not to take everything so seriously? Sometimes the best way forward is to find the humor in our human tendency to dramatize. What would make you laugh about this situation in 5 years? What's ironically funny about the timing or circumstances?`;
+                    break;
+                case 'mystery':
+                    reframe = `As a detective in your own mystery story, you're gathering clues about yourself and your patterns. This challenge contains important information waiting to be discovered. What evidence are you collecting about your resilience? What patterns are emerging that you hadn't noticed before? Every good mystery has hidden connections - what might this situation be revealing about your deeper values or desires?`;
+                    break;
+                case 'transformation':
+                    reframe = `Like a caterpillar in its cocoon, you're in a necessary phase of transformation. This challenge isn't something happening TO you, but something happening FOR your evolution. The discomfort you're feeling is the growing pains of becoming who you're meant to be. What old patterns or beliefs are you shedding? What's trying to emerge in your life? Trust that this dissolution is preparing you for a more integrated, authentic version of yourself.`;
+                    break;
+            }
+            
+            document.getElementById('narrative-reframe').textContent = reframe;
+            document.getElementById('narrative-result').style.display = 'block';
+        }
+
+        // Schema detection and interruption
+        function detectSchema() {
+            const input = document.getElementById('schema-input').value.toLowerCase();
+            let detectedSchema = '';
+            
+            if (input.includes('not good enough') || input.includes('inadequate') || input.includes('failure')) {
+                detectedSchema = 'Defectiveness/Shame Schema';
+            } else if (input.includes('abandon') || input.includes('reject') || input.includes('leave')) {
+                detectedSchema = 'Abandonment Schema';
+            } else if (input.includes('control') || input.includes('perfect') || input.includes('mistake')) {
+                detectedSchema = 'Unrelenting Standards Schema';
+            } else if (input.includes('hurt') || input.includes('trust') || input.includes('betrayed')) {
+                detectedSchema = 'Mistrust/Abuse Schema';
+            } else {
+                detectedSchema = 'Emotional Deprivation Schema';
+            }
+            
+            document.getElementById('detected-schema').textContent = detectedSchema;
+            document.getElementById('schema-detection').style.display = 'block';
+        }
+
+        function useSchemaAttack(technique) {
+            let instruction = '';
+            
+            switch(technique) {
+                case 'reality-testing':
+                    instruction = `Reality Testing: Ask yourself these questions: 1) What evidence supports this thought? 2) What evidence contradicts it? 3) What would I tell a friend experiencing this? 4) Am I using any thinking traps (all-or-nothing, mind reading, etc.)? 5) What's a more balanced perspective?`;
+                    break;
+                case 'cognitive-restructuring':
+                    instruction = `Cognitive Restructuring: Let's challenge this pattern step by step: 1) Identify the specific thought or belief. 2) Rate how much you believe it (0-100%). 3) Generate 3 alternative interpretations. 4) Look for evidence supporting each alternative. 5) Create a more balanced thought. 6) Re-rate your belief in the original thought.`;
+                    break;
+                case 'behavioral-experiment':
+                    instruction = `Behavioral Experiment: Test this schema in reality: 1) Make a specific prediction based on your schema. 2) Design a small, safe experiment to test it. 3) Collect data objectively. 4) Compare results to your prediction. 5) Reflect on what you learned. Example: "If I share my opinion, people will reject me" → Share one small opinion and observe actual responses.`;
+                    break;
+                case 'mindful-awareness':
+                    instruction = `Mindful Schema Awareness: Practice observing this pattern without judgment: 1) Notice when the schema activates (body sensations, emotions, thoughts). 2) Name it: "I'm having my 'not good enough' thoughts again." 3) Breathe and create space around it. 4) Remember: You are not your schemas - they're old protection patterns. 5) Choose how to respond from awareness rather than reactivity.`;
+                    break;
+            }
+            
+            document.getElementById('technique-instruction').textContent = instruction;
+            document.getElementById('technique-guide').style.display = 'block';
+        }
+
+        // AI multi-perspective analysis
+        function getAIAnalysis() {
+            const input = document.getElementById('ai-input').value;
+            
+            // Simulate AI analysis (in real app, this would call AI API)
+            const jungAnalysis = "From a Jungian perspective, this situation may be activating your shadow material or calling for integration of unconscious aspects. Consider what parts of yourself you might be projecting onto others or what archetypal energy is at play.";
+            
+            const cbtAnalysis = "Cognitively, I notice some potential thinking patterns here. Let's examine the evidence for your thoughts and look for any cognitive distortions like catastrophizing or all-or-nothing thinking that might be amplifying distress.";
+            
+            const mindfulAnalysis = "From a mindfulness standpoint, this is an opportunity to practice present-moment awareness. Notice how thoughts and feelings arise and pass away without needing to fix or change them immediately.";
+            
+            const neuroAnalysis = "Neuroplastically, your brain is actively rewiring right now. Each time you choose a new response to old patterns, you're literally building new neural pathways. This challenge is perfect for growth.";
+            
+            document.getElementById('jung-analysis').textContent = jungAnalysis;
+            document.getElementById('cbt-analysis').textContent = cbtAnalysis;
+            document.getElementById('mindful-analysis').textContent = mindfulAnalysis;
+            document.getElementById('neuro-analysis').textContent = neuroAnalysis;
+            
+            const suggestions = ['Practice self-compassion', 'Try behavioral experiment', 'Use breathing technique', 'Journal insights'];
+            const suggestionsContainer = document.getElementById('multi-suggestions');
+            suggestionsContainer.innerHTML = '';
+            suggestions.forEach(suggestion => {
+                const chip = document.createElement('div');
+                chip.className = 'suggestion-chip';
+                chip.textContent = suggestion;
+                suggestionsContainer.appendChild(chip);
+            });
+            
+            document.getElementById('ai-analysis').style.display = 'block';
+        }
+
+        // Integration planning
+        function createIntegrationPlan() {
+            const integrationMessage = "Perfect! You're in the optimal neuroplasticity window. Based on your insight, here's your personalized integration plan to wire this learning into your nervous system:";
+            
+            document.getElementById('integration-message').textContent = integrationMessage;
+            
+            const actions = ['Practice for 2 minutes now', 'Set phone reminder for tonight', 'Share with trusted friend', 'Journal before bed'];
+            const actionsContainer = document.getElementById('integration-actions');
+            actionsContainer.innerHTML = '';
+            actions.forEach(action => {
+                const chip = document.createElement('div');
+                chip.className = 'suggestion-chip';
+                chip.textContent = action;
+                actionsContainer.appendChild(chip);
+            });
+            
+            document.getElementById('integration-plan').style.display = 'block';
+        }
+
+        // Initialize app
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSkillCard();
+            
+            // Simulate real-time coherence updates
+            setInterval(() => {
+                const currentScore = parseFloat(document.getElementById('coherence-score').textContent);
+                const newScore = currentScore + (Math.random() - 0.5) * 0.2;
+                const clampedScore = Math.max(1, Math.min(10, newScore));
+                document.getElementById('coherence-score').textContent = clampedScore.toFixed(1);
+            }, 10000);
+        });
+    </script>
+</body>
+</html>
